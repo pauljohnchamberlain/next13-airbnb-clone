@@ -6,9 +6,9 @@ import { useCallback } from "react";
 import { IconType } from "react-icons";
 
 interface CategoryBoxProps {
-  icon: IconType,
-  label: string;
-  selected?: boolean;
+	icon?: IconType;
+	label: string;
+	selected?: boolean;
 }
 
 const CategoryBox: React.FC<CategoryBoxProps> = ({
@@ -62,7 +62,7 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
       `}
     >
       <Icon size={26} />
-      <div className="font-medium text-sm">
+      <div className="text-sm font-medium">
         {label}
       </div>
     </div>

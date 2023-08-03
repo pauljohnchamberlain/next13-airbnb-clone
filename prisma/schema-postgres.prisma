@@ -1,0 +1,136 @@
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_PRISMA_URL") // uses connection pooling
+  directUrl         = env("DATABASE_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("DATABASE_URL_NON_POOLING") // used for migrations
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  refresh_token_expires_in Int?
+  password                 String?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?   @default(value: "avatar.png")
+  age           Int?
+  bio           String?
+  accounts      Account[]
+  following     Follows[] @relation("follower")
+  followedBy    Follows[] @relation("following")
+  sessions      Session[]
+  role          Role      @default(USER)
+  ratingsGiven  Review[]
+  Guide         Guide[]
+}
+
+model Follows {
+  followerId  String
+  followingId String
+  follower    User   @relation("follower", fields: [followerId], references: [id])
+  following   User   @relation("following", fields: [followingId], references: [id])
+
+  @@id([followerId, followingId])
+}
+
+model Experience {
+  id                 String           @id @default(cuid())
+  title              String
+  slug               String           @unique
+  link               String
+  tags               String[]
+  description        String
+  summary            String
+  duration           Int
+  includes           String[]
+  guestRequirements  String[]
+  whatToBring        String[]
+  cancellationPolicy String
+  ratingsAverage     Float            @default(0)
+  ratingsCount       Int
+  price              Int
+  priceDiscount      Int
+  imageCover         String
+  imageGallery       String[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  location           String
+  lat                Float?
+  lng                Float?
+  guides             TourProvider[]
+  startDate          DateTime?
+  endDate            DateTime?
+  reviews            Review[]
+}
+
+model Review {
+  id           String     @id @default(cuid())
+  rating       Int
+  comment      String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  experience   Experience @relation(fields: [experienceId], references: [id])
+  experienceId String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model TourProvider {
+  id           String     @id @default(cuid())
+  name         String
+  experience   Experience @relation(fields: [experienceId], references: [id])
+  experienceId String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Dogs {
+  name  String
+  image String
+  breed String @unique
+  slug  String @unique
+}
+
+enum Role {
+  USER
+  GUIDE
+  ADMIN
+}
