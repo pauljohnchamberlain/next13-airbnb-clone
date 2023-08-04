@@ -70,13 +70,3 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
 }
  
 export default CategoryBox;
-      <div className="text-sm font-medium">
-        {label}
-      </div>
-    </div>
-   );
-}
-   );
-}
- 
-export default CategoryBox;
