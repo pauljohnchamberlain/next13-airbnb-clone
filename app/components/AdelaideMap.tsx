@@ -27,7 +27,7 @@ const url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 // Replace with your actual Geocoding API key
-Geocode.setApiKey('AIzaSyCUQxmF1Z_ccOD7d7Ehn_nOVdspdQNqEUQ');
+Geocode.setApiKey(process.env.GOOGLE_MAPS_API_KEY || '');
 
 Geocode.setLanguage('en');
 Geocode.setRegion('au');

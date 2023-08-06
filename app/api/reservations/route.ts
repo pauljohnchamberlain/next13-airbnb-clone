@@ -14,31 +14,31 @@ export async function POST(
 
   const body = await request.json();
   const { 
-    listingId,
+    accommodationId,
     startDate,
     endDate,
     totalPrice
    } = body;
 
-   if (!listingId || !startDate || !endDate || !totalPrice) {
+   if (!accommodationId || !startDate || !endDate || !totalPrice) {
     return NextResponse.error();
   }
 
-  const listingAndReservation = await prisma.listing.update({
-    where: {
-      id: listingId
-    },
-    data: {
-      reservations: {
-        create: {
-          userId: currentUser.id,
-          startDate,
-          endDate,
-          totalPrice,
-        }
-      }
-    }
-  });
+  const listingAndReservation = await prisma.accommodation.update({
+		where: {
+			id: accommodationId,
+		},
+		data: {
+			reservations: {
+				create: {
+					userId: currentUser.id,
+					startDate,
+					endDate,
+					totalPrice,
+				},
+			},
+		},
+	});
 
   return NextResponse.json(listingAndReservation);
 }

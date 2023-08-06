@@ -9,59 +9,53 @@ import Heading from "../Heading";
 import HeartButton from "../HeartButton";
 
 interface ListingHeadProps {
-  title: string;
-  locationValue: string;
-  imageSrc: string;
-  id: string;
-  currentUser?: SafeUser | null
+	title: string;
+	location: string;
+	imageCover: string;
+	id: string;
+	currentUser?: SafeUser | null;
 }
 
-const ListingHead: React.FC<ListingHeadProps> = ({
-  title,
-  locationValue,
-  imageSrc,
-  id,
-  currentUser
-}) => {
-  const { getByValue } = useCountries();
+const ListingHead: React.FC<ListingHeadProps> = ({ title, location, imageCover, id, currentUser }) => {
+	console.log('Title:', title);
+	console.log('Location Value:', location);
+	console.log('Image Cover:', imageCover);
+	console.log('ID:', id);
+	console.log('Current User:', currentUser);
 
-  const location = getByValue(locationValue);
+	const { getByValue } = useCountries();
 
-  return ( 
-    <>
-      <Heading
-        title={title}
-        subtitle={`${location?.region}, ${location?.label}`}
-      />
-      <div className="
+	const locationData = getByValue(location);
+
+	console.log('getByValue :>> ', getByValue(location));
+	console.log('location', location);
+	console.log('location:', location);
+
+	return (
+		<>
+			<Heading title={title} subtitle={`${locationData?.region}, ${locationData?.label}`} />
+			<div
+				className='
           w-full
           h-[60vh]
           overflow-hidden 
           rounded-xl
           relative
-        "
-      >
-        <Image
-          src={imageSrc}
-          fill
-          className="object-cover w-full"
-          alt="Image"
-        />
-        <div
-          className="
+        '
+			>
+				<Image src={imageCover} fill className='object-cover w-full' alt='Image' />
+				<div
+					className='
             absolute
             top-5
             right-5
-          "
-        >
-          <HeartButton 
-            listingId={id}
-            currentUser={currentUser}
-          />
-        </div>
-      </div>
-    </>
-   );
-}
+          '
+				>
+					<HeartButton accommodationId={id} currentUser={currentUser} />
+				</div>
+			</div>
+		</>
+	);
+};
  
 export default ListingHead;

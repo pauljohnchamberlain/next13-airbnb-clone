@@ -4,7 +4,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-  listingId?: string;
+  accommodationId?: string;
 }
 
 export async function POST(
@@ -17,15 +17,15 @@ export async function POST(
     return NextResponse.error();
   }
 
-  const { listingId } = params;
+  const { accommodationId } = params;
 
-  if (!listingId || typeof listingId !== 'string') {
+  if (!accommodationId || typeof accommodationId !== 'string') {
     throw new Error('Invalid ID');
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];
 
-  favoriteIds.push(listingId);
+  favoriteIds.push(accommodationId);
 
   const user = await prisma.user.update({
     where: {
@@ -49,15 +49,15 @@ export async function DELETE(
     return NextResponse.error();
   }
 
-  const { listingId } = params;
+  const { accommodationId } = params;
 
-  if (!listingId || typeof listingId !== 'string') {
+  if (!accommodationId || typeof accommodationId !== 'string') {
     throw new Error('Invalid ID');
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];
 
-  favoriteIds = favoriteIds.filter((id) => id !== listingId);
+  favoriteIds = favoriteIds.filter((id) => id !== accommodationId);
 
   const user = await prisma.user.update({
     where: {

@@ -60,7 +60,7 @@ const ExperienceModal = () => {
 			guestCount: 1,
 			roomCount: 1,
 			bathroomCount: 1,
-			imageSrc: '',
+			imageCover: '',
 			price: 1,
 			title: '',
 			description: '',
@@ -72,7 +72,7 @@ const ExperienceModal = () => {
 	const guestCount = watch('guestCount');
 	const roomCount = watch('roomCount');
 	const bathroomCount = watch('bathroomCount');
-	const imageSrc = watch('imageSrc');
+	const imageCover = watch('imageCover');
 
 	const Map = useMemo(
 		() =>
@@ -209,7 +209,7 @@ const ExperienceModal = () => {
 		bodyContent = (
 			<div className='flex flex-col gap-8'>
 				<Heading title='Add a photo of your place' subtitle='Show guests what your place looks like!' />
-				<ImageUpload onChange={(value) => setCustomValue('imageSrc', value)} value={imageSrc} />
+				<ImageUpload onChange={(value) => setCustomValue('imageCover', value)} value={imageCover} />
 			</div>
 		);
 	}

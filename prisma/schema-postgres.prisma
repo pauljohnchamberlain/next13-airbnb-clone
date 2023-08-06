@@ -51,7 +51,7 @@ model User {
   sessions      Session[]
   role          Role      @default(USER)
   ratingsGiven  Review[]
-  Guide         Guide[]
+  Guide         TourProvider[]
 }
 
 model Follows {

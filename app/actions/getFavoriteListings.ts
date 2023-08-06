@@ -10,13 +10,13 @@ export default async function getFavoriteListings() {
       return [];
     }
 
-    const favorites = await prisma.listing.findMany({
-      where: {
-        id: {
-          in: [...(currentUser.favoriteIds || [])]
-        }
-      }
-    });
+    const favorites = await prisma.accommodation.findMany({
+			where: {
+				id: {
+					in: [...(currentUser.favoriteIds || [])],
+				},
+			},
+		});
 
     const safeFavorites = favorites.map((favorite) => ({
       ...favorite,
