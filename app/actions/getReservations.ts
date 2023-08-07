@@ -1,9 +1,9 @@
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-	accommodationId?: string;
-	userId?: string;
-	authorId?: string;
+	accommodationId?: number;
+	userId?: number;
+	authorId?: number;
 }
 
 export default async function getReservations(params: IParams) {
@@ -13,12 +13,7 @@ export default async function getReservations(params: IParams) {
 		const query: any = {};
 
 		if (accommodationId !== undefined) {
-			// Parse the accommodationId to an integer
-			const accommodationIdNumber = parseInt(accommodationId, 10);
-			if (isNaN(accommodationIdNumber)) {
-				throw new Error('Invalid Accommodation ID');
-			}
-			query.accommodationId = accommodationIdNumber; // Use the parsed integer value here
+			query.accommodationId = accommodationId;
 		}
 
 		if (userId) {

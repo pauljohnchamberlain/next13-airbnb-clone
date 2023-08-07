@@ -59,7 +59,7 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing, reservations = [
 	}, [listing.category]);
 
 	const [isLoading, setIsLoading] = useState(false);
-	const [totalPrice, setTotalPrice] = useState(listing.price);
+	const [totalPrice, setTotalPrice] = useState(listing.price ?? 0);
 	const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
 	const onCreateReservation = useCallback(() => {
@@ -93,9 +93,9 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing, reservations = [
 			const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
 
 			if (dayCount && listing.price) {
-				setTotalPrice(dayCount * listing.price);
+				setTotalPrice(dayCount * listing.price ?? 0);
 			} else {
-				setTotalPrice(listing.price);
+				setTotalPrice(listing.price ?? 0);
 			}
 		}
 	}, [dateRange, listing.price]);
@@ -143,7 +143,7 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing, reservations = [
               '
 						>
 							<ListingReservation
-								price={listing.price}
+								price={listing.price ?? 0}
 								totalPrice={totalPrice}
 								onChangeDate={(value) => setDateRange(value)}
 								dateRange={dateRange}

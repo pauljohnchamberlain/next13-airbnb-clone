@@ -8,7 +8,7 @@ import EmptyState from '@/app/components/EmptyState';
 import ListingClient from './ListingClient';
 
 interface IParams {
-	accommodationId?: string;
+	accommodationId?: number;
 }
 
 const ListingPage = async ({ params }: { params: IParams }) => {

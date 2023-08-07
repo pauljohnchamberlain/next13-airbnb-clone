@@ -1,7 +1,7 @@
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-	accommodationId?: string;
+	accommodationId?: number;
 }
 
 export default async function getListingById(params: IParams) {
@@ -14,16 +14,9 @@ export default async function getListingById(params: IParams) {
 			throw new Error('Accommodatiion ID is required');
 		}
 
-		// Parse the accommodationId to an integer
-		const listingIdNumber = parseInt(accommodationId, 10);
-		console.log('Listing ID Number', listingIdNumber);
-		if (isNaN(listingIdNumber)) {
-			throw new Error('Invalid Listing ID');
-		}
-
 		const listing = await prisma.accommodation.findUnique({
 			where: {
-				id: listingIdNumber,
+				id: accommodationId,
 			},
 			include: {
 				user: true,

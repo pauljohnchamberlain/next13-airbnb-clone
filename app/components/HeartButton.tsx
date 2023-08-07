@@ -8,8 +8,8 @@ import { SafeUser } from "@/app/types";
 import ClientOnly from "./ClientOnly";
 
 interface HeartButtonProps {
-  accommodationId: string
-  currentUser?: SafeUser | null
+	accommodationId: number;
+	currentUser?: SafeUser | null;
 }
 
 const HeartButton: React.FC<HeartButtonProps> = ({ 

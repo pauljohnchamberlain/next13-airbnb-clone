@@ -12,24 +12,14 @@ interface ListingHeadProps {
 	title: string;
 	location: string;
 	imageCover: string;
-	id: string;
+	id: number;
 	currentUser?: SafeUser | null;
 }
 
 const ListingHead: React.FC<ListingHeadProps> = ({ title, location, imageCover, id, currentUser }) => {
-	console.log('Title:', title);
-	console.log('Location Value:', location);
-	console.log('Image Cover:', imageCover);
-	console.log('ID:', id);
-	console.log('Current User:', currentUser);
-
 	const { getByValue } = useCountries();
 
 	const locationData = getByValue(location);
-
-	console.log('getByValue :>> ', getByValue(location));
-	console.log('location', location);
-	console.log('location:', location);
 
 	return (
 		<>

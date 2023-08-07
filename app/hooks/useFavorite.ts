@@ -8,8 +8,8 @@ import { SafeUser } from "@/app/types";
 import useLoginModal from "./useLoginModal";
 
 interface IUseFavorite {
-  accommodationId: string;
-  currentUser?: SafeUser | null
+	accommodationId: number;
+	currentUser?: SafeUser | null;
 }
 
 const useFavorite = ({ accommodationId, currentUser }: IUseFavorite) => {
@@ -20,7 +20,7 @@ const useFavorite = ({ accommodationId, currentUser }: IUseFavorite) => {
   const hasFavorited = useMemo(() => {
     const list = currentUser?.favoriteIds || [];
 
-    return list.includes(accommodationId);
+    return list.includes(Number(accommodationId)); 
   }, [currentUser, accommodationId]);
 
   const toggleFavorite = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
