@@ -13,7 +13,14 @@ export default async function getReservations(params: IParams) {
 		const query: any = {};
 
 		if (accommodationId !== undefined) {
-			query.accommodationId = accommodationId;
+			const accommodationIdNumber = parseInt(accommodationId.toString(), 10);
+
+			// Check if the parsed value is a valid number
+			if (isNaN(accommodationIdNumber)) {
+				throw new Error('Invalid Accommodation ID');
+			}
+
+			query.accommodationId = accommodationIdNumber;
 		}
 
 		if (userId) {

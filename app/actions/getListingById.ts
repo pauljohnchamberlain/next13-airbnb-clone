@@ -8,15 +8,24 @@ export default async function getListingById(params: IParams) {
 	try {
 		const { accommodationId } = params;
 
-		console.log('Params', params);
-
 		if (!accommodationId) {
 			throw new Error('Accommodatiion ID is required');
 		}
 
+		const listingIdNumber = parseInt(accommodationId.toString(), 10);
+
+		console.log('listingIdNumber', listingIdNumber);
+
+		// Check if the parsed value is a valid number
+		if (isNaN(listingIdNumber)) {
+			throw new Error('Invalid Accommodation ID');
+		}
+
+		console.log('Params', params);
+
 		const listing = await prisma.accommodation.findUnique({
 			where: {
-				id: accommodationId,
+				id: listingIdNumber,
 			},
 			include: {
 				user: true,
