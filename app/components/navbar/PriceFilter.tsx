@@ -107,14 +107,14 @@ const PriceFilter = ({}) => {
 																	<button
 																		className='relative inline-block w-8 h-8 px-2 py-1 m-0 text-sm text-center text-black border border-solid cursor-pointer border-zinc-400'
 																		type='button'
-																		aria-valuenow='1'
+																		aria-valuenow={1}
 																		aria-valuetext='$1 AUD'
 																		aria-label='Minimum Price'
 																		role='slider'
-																		aria-valuemax='150'
-																		aria-valuemin='1'
+																		aria-valuemax={150}
+																		aria-valuemin={1}
 																		aria-disabled='false'
-																		tabIndex='0'
+																		tabIndex={0}
 																		style={{
 																			textDecoration: 'none',
 																			outline: 'none',
@@ -139,14 +139,14 @@ const PriceFilter = ({}) => {
 																	<button
 																		className='relative inline-block w-8 h-8 px-2 py-1 m-0 text-sm text-center text-black border border-solid cursor-pointer border-zinc-400'
 																		type='button'
-																		aria-valuenow='150'
+																		aria-valuenow={150}
 																		aria-valuetext='$150 AUD'
 																		aria-label='Maximum Price'
 																		role='slider'
-																		aria-valuemax='150'
-																		aria-valuemin='1'
+																		aria-valuemax={150}
+																		aria-valuemin={1}
 																		aria-disabled='false'
-																		tabIndex='0'
+																		tabIndex={0}
 																		style={{
 																			textDecoration: 'none',
 																			outline: 'none',
@@ -208,7 +208,7 @@ const PriceFilter = ({}) => {
 																</div>
 															</label>
 														</div>
-														<div className='m-2' tabIndex='-1'>
+														<div className='m-2' tabIndex={-1}>
 															–
 														</div>
 														<div
