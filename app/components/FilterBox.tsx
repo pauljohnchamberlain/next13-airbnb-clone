@@ -9,15 +9,20 @@ interface FilterBoxProps {
 	selected?: boolean;
 }
 
+interface QueryParams {
+	category?: string;
+	// add other expected fields here
+}
+
 const FilterBox: React.FC<FilterBoxProps> = ({ label, selected }) => {
 	const router = useRouter();
 	const params = useSearchParams();
 
 	const handleClick = useCallback(() => {
-		let currentQuery = {};
+		let currentQuery: QueryParams = {};
 
 		if (params) {
-			currentQuery = qs.parse(params.toString());
+			currentQuery = qs.parse(params.toString()) as QueryParams;
 		}
 
 		let currentCategories = currentQuery.category ? currentQuery.category.split(',') : [];
