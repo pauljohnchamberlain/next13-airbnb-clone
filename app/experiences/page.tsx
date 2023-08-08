@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+// 'auto' | 'force-dynamic' | 'error' | 'force-static'
+
 import Container from '@/app/components/Container';
 import ExperienceCard from '@/app/components/experiences/ExperienceCard'; // You might need to create this component
 import EmptyState from '@/app/components/EmptyState';
