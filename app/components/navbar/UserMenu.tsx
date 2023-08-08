@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 import useLoginModal from '@/app/hooks/useLoginModal';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
@@ -20,6 +20,7 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 	const router = useRouter();
+	const pathName = usePathname();
 
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();
@@ -51,35 +52,39 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 	return (
 		<div className='relative'>
 			<div className='flex flex-row items-center gap-3'>
-				<div
-					onClick={onExperience}
-					className='hidden px-4 py-3 text-sm font-semibold transition rounded-full cursor-pointer md:block hover:bg-neutral-100'
-				>
-					Add Your Experience
-				</div>
-				<div
-					onClick={onRent}
-					className='hidden px-4 py-3 text-sm font-semibold transition rounded-full cursor-pointer md:block hover:bg-neutral-100'
-				>
-					Add Your Accommodation
-				</div>
+				{pathName === '/' || pathName === '/experiences' ? (
+					<div
+						onClick={onExperience}
+						className='hidden px-4 py-3 text-sm font-semibold transition rounded-full cursor-pointer md:block hover:bg-neutral-100'
+					>
+						Add Your Experience
+					</div>
+				) : (
+					<div
+						onClick={onRent}
+						className='hidden px-4 py-3 text-sm font-semibold transition rounded-full cursor-pointer md:block hover:bg-neutral-100'
+					>
+						Add Your Accommodation
+					</div>
+				)}
+
 				<div
 					onClick={toggleOpen}
 					className='
-          p-4
-          md:py-1
-          md:px-2
-          border-[1px] 
-          border-neutral-200 
-          flex 
-          flex-row 
-          items-center 
-          gap-3 
-          rounded-full 
-          cursor-pointer 
-          hover:shadow-md 
-          transition
-          '
+			p-4
+			md:py-1
+			md:px-2
+			border-[1px] 
+			border-neutral-200 
+			flex 
+			flex-row 
+			items-center 
+			gap-3 
+			rounded-full 
+			cursor-pointer 
+			hover:shadow-md 
+			transition
+			'
 				>
 					<AiOutlineMenu />
 					<div className='hidden md:block'>
