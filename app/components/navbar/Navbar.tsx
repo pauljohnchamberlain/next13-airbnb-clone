@@ -1,3 +1,5 @@
+'use client';
+import { usePathname } from 'next/navigation'; // Import useRouter from next/router
 import { SafeUser } from '@/app/types';
 
 import Categories from './Categories';
@@ -12,14 +14,11 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
+	const pathName = usePathname(); // Use the useRouter hook
+
 	return (
 		<div className='fixed z-10 w-full bg-white shadow-sm'>
-			<div
-				className='
-          py-4 
-          border-b-[1px]
-        '
-			>
+			<div className='py-4 border-b-[1px]'>
 				<Container>
 					<div className='flex flex-row items-center justify-between gap-3 md:gap-0'>
 						<Logo />
@@ -28,8 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
 					</div>
 				</Container>
 			</div>
-			<Filter />
-			{/* <Categories /> */}
+			{pathName === '/' ? <Categories /> : pathName === '/experiences' ? <Filter /> : <Filter />}
 		</div>
 	);
 };

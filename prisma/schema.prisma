@@ -4,9 +4,8 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  url               = env("DATABASE_PRISMA_URL") // uses connection pooling
-  directUrl         = env("DATABASE_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("DATABASE_URL_NON_POOLING") // used for migrations
+  url               = env("DATABASE_URL") // uses connection pooling
+  directUrl         = env("DIRECT_URL") // uses a direct connection without pooling
 }
 
 // datasource db {
@@ -38,6 +37,7 @@ model User {
   followedBy           Follows[]              @relation("following")
   sessions             Session[]
   ratingsGiven         Review[]
+  experience           Experience[]
   experienceProvider   ExperienceProvider[]
 }
 
@@ -127,12 +127,13 @@ model AccommodationBooking {
 
 model Experience {
   id                 Int                  @id @default(autoincrement())
+  userId             Int
   title              String
   slug               String               @unique
   tags               String[]
   description        String
   summary            String
-  duration           Int
+  duration           Int?
   includes           String[]
   guestRequirements  String[]
   whatToBring        String[]
@@ -153,6 +154,7 @@ model Experience {
   endDate            DateTime?
   reviews            Review[]
   experienceBooking  ExperienceBooking[]
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ExperienceBooking {

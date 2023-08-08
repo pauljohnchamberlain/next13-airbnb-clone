@@ -104,6 +104,7 @@ CREATE TABLE "AccommodationBooking" (
 -- CreateTable
 CREATE TABLE "Experience" (
     "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "tags" TEXT[],
@@ -217,6 +218,9 @@ ALTER TABLE "AccommodationBooking" ADD CONSTRAINT "AccommodationBooking_userId_f
 
 -- AddForeignKey
 ALTER TABLE "AccommodationBooking" ADD CONSTRAINT "AccommodationBooking_accommodationId_fkey" FOREIGN KEY ("accommodationId") REFERENCES "Accommodation"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Experience" ADD CONSTRAINT "Experience_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ExperienceBooking" ADD CONSTRAINT "ExperienceBooking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

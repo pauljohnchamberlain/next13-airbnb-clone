@@ -12,14 +12,12 @@ import useExperienceModal from '@/app/hooks/useExperienceModal';
 import Modal from './Modal';
 import Counter from '../inputs/Counter';
 import CategoryInput from '../inputs/CategoryInput';
-import CountrySelect from '../inputs/CountrySelect';
-import { categories } from '../navbar/Categories';
-import tagCategories from '../navbar/TagCategories';
+import SuburbSelect, { SuburbSelectValue } from '../inputs/SuburbSelect';
 import ImageUpload from '../inputs/ImageUpload';
 import Input from '../inputs/Input';
 import Heading from '../Heading';
-import SuburbSelect, { SuburbSelectValue } from '../inputs/SuburbSelect';
 import AdelaideMap from '../AdelaideMap';
+import tagCategories from '../navbar/TagCategories';
 
 enum STEPS {
 	CATEGORY = 0,
@@ -43,7 +41,7 @@ const ExperienceModal = () => {
 		const suburbName = value && Array.isArray(value.suburb) ? value.suburb[0] : null;
 		setSelectedSuburb(suburbName);
 		console.log(`Suburb name: ${suburbName}`);
-		setCustomValue('location', value); // for the dropdown
+		setCustomValue('location', value);
 	};
 
 	const {
@@ -106,9 +104,9 @@ const ExperienceModal = () => {
 		setIsLoading(true);
 
 		axios
-			.post('/api/listings', data)
+			.post('/api/experiences', data)
 			.then(() => {
-				toast.success('Listing created!');
+				toast.success('Experience created!');
 				router.refresh();
 				reset();
 				setStep(STEPS.CATEGORY);
@@ -138,41 +136,43 @@ const ExperienceModal = () => {
 		return 'Back';
 	}, [step]);
 
-	let bodyContent = (
-		<div className='flex flex-col gap-8'>
-			<Heading title='Which of these best describes your experience?' subtitle='Pick a category' />
-			<div
-				className='
-          grid 
-          grid-cols-1 
-          md:grid-cols-2 
-          gap-3
-          max-h-[50vh]
-          overflow-y-auto
-        '
-			>
-				{tagCategories.map((item) => (
-					<div key={item.label} className='col-span-1'>
-						<CategoryInput
-							onClick={(category) => setCustomValue('category', category)}
-							selected={category === item.label}
-							label={item.label}
-							icon={item.icon}
-						/>
-					</div>
-				))}
+	let bodyContent;
+
+	if (step === STEPS.CATEGORY) {
+		bodyContent = (
+			<div className='flex flex-col gap-8'>
+				<Heading title='Which of these best describes your experience?' subtitle='Pick a category' />
+				<div
+					className='
+			  grid 
+			  grid-cols-1 
+			  md:grid-cols-2 
+			  gap-3
+			  max-h-[50vh]
+			  overflow-y-auto
+			'
+				>
+					{tagCategories.map((item) => (
+						<div key={item.label} className='col-span-1'>
+							<CategoryInput
+								onClick={(category) => setCustomValue('category', category)}
+								selected={category === item.label}
+								label={item.label}
+								icon={item.icon}
+							/>
+						</div>
+					))}
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 
 	if (step === STEPS.LOCATION) {
 		bodyContent = (
 			<div className='flex flex-col gap-8'>
-				<Heading title='Where is your place located?' subtitle='Help guests find you!' />
+				<Heading title='Where is your experience located?' subtitle='Help guests find you!' />
 				<SuburbSelect value={location} onChange={handleSuburbChange} />
 				<AdelaideMap suburb={selectedSuburb} />
-				{/* <Map suburb={selectedSuburb} /> */}
-				{/* <CountrySelect value={location} onChange={(value) => setCustomValue('location', value)} /> */}
 			</div>
 		);
 	}
@@ -180,7 +180,7 @@ const ExperienceModal = () => {
 	if (step === STEPS.INFO) {
 		bodyContent = (
 			<div className='flex flex-col gap-8'>
-				<Heading title='Share some basics about your experience' subtitle='What amenities do you have?' />
+				<Heading title='Share some details about your experience' subtitle='What can guests expect?' />
 				<Counter
 					onChange={(value) => setCustomValue('guestCount', value)}
 					value={guestCount}
@@ -192,15 +192,8 @@ const ExperienceModal = () => {
 					onChange={(value) => setCustomValue('roomCount', value)}
 					value={roomCount}
 					title='Duration'
-					subtitle='What is the duration of your tour?'
+					subtitle='What is the duration of your tour in hours?'
 				/>
-				{/* <hr />
-				<Counter
-					onChange={(value) => setCustomValue('bathroomCount', value)}
-					value={bathroomCount}
-					title='Bathrooms'
-					subtitle='How many bathroom?'
-				/> */}
 			</div>
 		);
 	}
@@ -208,7 +201,7 @@ const ExperienceModal = () => {
 	if (step === STEPS.IMAGES) {
 		bodyContent = (
 			<div className='flex flex-col gap-8'>
-				<Heading title='Add a photo of your place' subtitle='Show guests what your place looks like!' />
+				<Heading title='Add a photo of your experience' subtitle='Show guests what they can expect!' />
 				<ImageUpload onChange={(value) => setCustomValue('imageCover', value)} value={imageCover} />
 			</div>
 		);
@@ -228,7 +221,7 @@ const ExperienceModal = () => {
 	if (step === STEPS.PRICE) {
 		bodyContent = (
 			<div className='flex flex-col gap-8'>
-				<Heading title='Now, set your price person' subtitle='How much do you charge per person?' />
+				<Heading title='Now, set your price per person' subtitle='How much do you charge per person?' />
 				<Input
 					id='price'
 					label='Price'
@@ -247,7 +240,7 @@ const ExperienceModal = () => {
 		<Modal
 			disabled={isLoading}
 			isOpen={experienceModal.isOpen}
-			title='Airbnb your home!'
+			title='Airbnb your experience!'
 			actionLabel={actionLabel}
 			onSubmit={handleSubmit(onSubmit)}
 			secondaryActionLabel={secondaryActionLabel}
