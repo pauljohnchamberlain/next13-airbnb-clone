@@ -16,11 +16,11 @@ function Filter() {
 	const params = useSearchParams();
 	const selectedCategories = params?.get('category')?.split(',') || [];
 	const pathname = usePathname();
-	const isMainPage = pathname === '/';
+	// const isMainPage = pathname === '/';
 
-	if (!isMainPage) {
-		return null;
-	}
+	// if (!isMainPage) {
+	// 	return null;
+	// }
 
 	return (
 		<Container>
