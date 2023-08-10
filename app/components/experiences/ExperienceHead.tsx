@@ -12,9 +12,19 @@ interface ExperienceHeadProps {
 	imageCover: string;
 	id: number;
 	currentUser?: SafeUser | null;
+	summary?: string;
+	subtitle?: string;
 }
 
-const ExperienceHead: React.FC<ExperienceHeadProps> = ({ title, location, imageCover, id, currentUser }) => {
+const ExperienceHead: React.FC<ExperienceHeadProps> = ({
+	title,
+	location,
+	imageCover,
+	summary,
+	subtitle,
+	id,
+	currentUser,
+}) => {
 	const { getByValue } = useCountries();
 
 	const locationData = getByValue(location);
@@ -34,7 +44,7 @@ const ExperienceHead: React.FC<ExperienceHeadProps> = ({ title, location, imageC
 
 	return (
 		<>
-			<Heading title={title} subtitle={`${suburb}, ${state}`} />
+			<Heading title={title} location={`${suburb}, ${state}`} summary={summary} subtitle={subtitle} />
 			<div
 				className='
           w-full

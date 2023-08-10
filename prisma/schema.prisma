@@ -134,6 +134,7 @@ model Experience {
   description        String
   summary            String
   duration           Int?
+  guestCount         Int?
   includes           String[]
   guestRequirements  String[]
   whatToBring        String[]

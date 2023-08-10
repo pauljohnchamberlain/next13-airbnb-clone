@@ -63,9 +63,10 @@ const ExperienceInfo: React.FC<ExperienceInfoProps> = ({ user, description, dura
 				</div>
 			</div>
 			<hr />
-			{category && (
-				// <ExperienceCategory icon={category.icon} label={category?.label} description={category?.description} />
-				<ExperienceCategory />
+			{Array.isArray(category) ? (
+				<div className='categories'>{category.join(', ')}</div>
+			) : (
+				<ExperienceCategory icon={category.icon} label={category.label} description={category.description} />
 			)}
 			<hr />
 			<div

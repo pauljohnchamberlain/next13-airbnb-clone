@@ -10,7 +10,7 @@ interface FilterBoxProps {
 }
 
 interface QueryParams {
-	category?: string;
+	tags?: string;
 	// add other expected fields here
 }
 
@@ -25,26 +25,26 @@ const FilterBox: React.FC<FilterBoxProps> = ({ label, selected }) => {
 			currentQuery = qs.parse(params.toString()) as QueryParams;
 		}
 
-		let currentCategories = currentQuery.category ? currentQuery.category.split(',') : [];
+		let currentTags = currentQuery.tags ? currentQuery.tags.split(',') : [];
 
-		if (currentCategories.includes(label)) {
-			currentCategories = currentCategories.filter((cat) => cat !== label);
+		if (currentTags.includes(label)) {
+			currentTags = currentTags.filter((cat) => cat !== label);
 		} else {
-			currentCategories.push(label);
+			currentTags.push(label);
 		}
 
 		const updatedQuery: any = {
 			...currentQuery,
-			category: currentCategories.join(','),
+			tags: currentTags.join(','),
 		};
 
-		if (currentCategories.length === 0) {
-			delete updatedQuery.category;
+		if (currentTags.length === 0) {
+			delete updatedQuery.tags;
 		}
 
 		const url = qs.stringifyUrl(
 			{
-				url: '/',
+				url: '/experiences',
 				query: updatedQuery,
 			},
 			{ skipNull: true }

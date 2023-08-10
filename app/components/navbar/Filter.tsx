@@ -14,7 +14,11 @@ import tagCategories from '@/app/components/navbar/TagCategories';
 
 function Filter() {
 	const params = useSearchParams();
-	const selectedCategories = params?.get('category')?.split(',') || [];
+	const selectedTags = params?.get('tags')?.split(',') || [];
+
+	console.log('params.get(tags)', params.get('tags'));
+	console.log('selectedTags', selectedTags);
+
 	const pathname = usePathname();
 	// const isMainPage = pathname === '/';
 
@@ -48,7 +52,7 @@ function Filter() {
 							<div className='flex'>
 								<div className='flex h-12 overflow-hidden' style={{ flexFlow: 'wrap' }}>
 									{tagCategories.map((item) => (
-										<FilterBox key={item.label} label={item.label} selected={selectedCategories.includes(item.label)} />
+										<FilterBox key={item.label} label={item.label} selected={selectedTags.includes(item.label)} />
 									))}
 								</div>
 							</div>

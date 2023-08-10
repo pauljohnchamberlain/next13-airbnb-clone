@@ -12,8 +12,8 @@ export async function POST(request: Request) {
 	}
 
 	const body = await request.json();
-	console.log(body);
-	const { title, description, imageCover, tags, location, price } = body;
+	console.log('Body Request From Experienecs API', body);
+	const { title, description, imageCover, tags, location, price, duration, guestCount } = body;
 
 	Object.keys(body).forEach((value: any) => {
 		if (!body[value]) {
@@ -47,6 +47,8 @@ export async function POST(request: Request) {
 			summary: 'some-summary-value', // Replace with appropriate value
 			cancellationPolicy: 'some-cancellation-policy-value', // Replace with appropriate value
 			ratingsCount: 0, // Replace with appropriate value
+			duration: parseInt(duration, 10),
+			guestCount: parseInt(guestCount, 10),
 		},
 	});
 

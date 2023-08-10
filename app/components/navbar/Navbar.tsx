@@ -27,13 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
 					</div>
 				</Container>
 			</div>
-			{pathName === '/' || pathName === '/experiences' ? (
-				<Filter />
-			) : pathName === '/listings' ? (
-				<Categories />
-			) : (
-				<Filter />
-			)}
+			{pathName === '/' || pathName === '/experiences' ? <Filter /> : pathName === '/listings' ? <Categories /> : null}
 		</div>
 	);
 };

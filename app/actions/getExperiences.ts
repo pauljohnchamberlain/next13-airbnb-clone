@@ -3,16 +3,25 @@ import prisma from '@/app/libs/prismadb';
 export interface IExperiencesParams {
 	userId?: number;
 	location?: string;
-	duration?: number;
+	duration?: string;
 	startDate?: string;
 	endDate?: string;
 	category?: string;
-	tags?: string[];
+	tags?: string;
 }
 
 export default async function getExperiences(params: IExperiencesParams) {
 	try {
-		const { userId, location, duration, startDate, endDate, category, tags } = params;
+		const { userId, location, duration, startDate, endDate, category, tags: tagsString } = params;
+
+		console.log('duration :>> ', duration);
+
+		console.log('params', params);
+
+		console.log('params.tags', params.tags);
+
+		// Splitting the tags string into an array
+		const tags = tagsString ? tagsString.split(',') : [];
 
 		let query: any = {};
 
@@ -23,18 +32,28 @@ export default async function getExperiences(params: IExperiencesParams) {
 		if (location) {
 			query.location = location;
 		}
+		console.log('query.duration :>> ', query.duration);
 
-		if (duration) {
+		if (duration === '0-3 hours') {
+			let durationInt = 3;
 			query.duration = {
-				gte: +duration,
+				lte: durationInt,
 			};
 		}
+
+		// if (durationInt != null) {
+		// 	// Check if duration is not null or undefined
+
+		// 	query.duration = {
+		// 		lte: durationInt,
+		// 	};
+		// }
 
 		if (category) {
 			query.category = category;
 		}
 
-		if (tags) {
+		if (tags && tags.length > 0) {
 			query.tags = {
 				hasSome: tags,
 			};

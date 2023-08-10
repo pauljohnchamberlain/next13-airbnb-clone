@@ -53,10 +53,10 @@ const ExperienceModal = () => {
 		reset,
 	} = useForm<FieldValues>({
 		defaultValues: {
-			category: '',
+			tags: [],
 			location: null,
 			guestCount: 1,
-			roomCount: 1,
+			duration: 1,
 			bathroomCount: 1,
 			imageCover: '',
 			price: 1,
@@ -66,9 +66,9 @@ const ExperienceModal = () => {
 	});
 
 	const location = watch('location');
-	const category = watch('category');
+	const tags = watch('tags');
 	const guestCount = watch('guestCount');
-	const roomCount = watch('roomCount');
+	const duration = watch('duration');
 	const bathroomCount = watch('bathroomCount');
 	const imageCover = watch('imageCover');
 
@@ -155,8 +155,11 @@ const ExperienceModal = () => {
 					{tagCategories.map((item) => (
 						<div key={item.label} className='col-span-1'>
 							<CategoryInput
-								onClick={(category) => setCustomValue('category', category)}
-								selected={category === item.label}
+								onClick={(tag) => {
+									const newTags = tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag];
+									setCustomValue('tags', newTags);
+								}}
+								selected={tags.includes(item.label)}
 								label={item.label}
 								icon={item.icon}
 							/>
@@ -189,8 +192,8 @@ const ExperienceModal = () => {
 				/>
 				<hr />
 				<Counter
-					onChange={(value) => setCustomValue('roomCount', value)}
-					value={roomCount}
+					onChange={(value) => setCustomValue('duration', value)}
+					value={duration}
 					title='Duration'
 					subtitle='What is the duration of your tour in hours?'
 				/>

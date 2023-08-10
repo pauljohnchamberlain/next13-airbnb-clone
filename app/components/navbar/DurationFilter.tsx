@@ -1,16 +1,66 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+import qs from 'query-string';
+// import { useRouter } from 'next/router';
 
-const DurationFilter = ({}) => {
+interface FilterBoxProps {
+	label: string;
+	selected?: boolean;
+}
+
+interface QueryParams {
+	duration?: string;
+	// add other expected fields here
+}
+
+const DurationFilter: React.FC<FilterBoxProps> = ({ label, selected }) => {
 	const router = useRouter();
+	const params = useSearchParams();
+	const duration = params.get('duration') || '';
+	const currentDuration = duration.split(',');
 
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleOpen = useCallback(() => {
 		setIsOpen((value) => !value);
 	}, []);
+
+	const handleClick = useCallback(
+		(label: string) => {
+			let updatedDuration = currentDuration.includes(label)
+				? currentDuration.filter((dur) => dur !== label)
+				: [...currentDuration, label];
+
+			// Convert URLSearchParams to plain object
+			const currentQuery: Record<string, string> = {};
+			params.forEach((value, key) => {
+				currentQuery[key] = value;
+			});
+
+			// Construct the updated query object without using 'delete'
+			const updatedQuery = Object.fromEntries(
+				Object.entries({
+					...currentQuery,
+					duration: updatedDuration.join(','),
+				}).filter(([key, value]) => key !== 'duration' || value.length > 0)
+			);
+
+			const url = qs.stringifyUrl(
+				{
+					url: '/experiences',
+					query: updatedQuery,
+				},
+				{ skipNull: true }
+			);
+
+			console.log('Constructed URL:', url);
+
+			router.push(url);
+		},
+		[duration, router]
+	);
 
 	return (
 		<>
@@ -24,7 +74,9 @@ const DurationFilter = ({}) => {
 								className='inline-block py-1 pr-2 whitespace-nowrap'
 							>
 								<button
-									className='relative inline-block w-full px-4 py-2 m-0 font-sans text-xs leading-4 text-center duration-150 bg-white border border-solid cursor-pointer border-zinc-300 hover:border-zinc-600'
+									className={`relative inline-block w-full px-4 py-2 m-0 font-sans text-xs leading-4 text-center duration-150 bg-white border border-solid cursor-pointer hover:border-zinc-600 ${
+										selected ? 'border-zinc-800' : 'border-zinc-300'
+									} ${selected ? 'text-neutral-800' : 'text-neutral-500'} transition`}
 									aria-expanded='false'
 									type='button'
 									style={{
@@ -99,6 +151,7 @@ const DurationFilter = ({}) => {
 								name='search-filter-durationRanges'
 								data-test-id={`search-filters-item-input-trigger-durationRanges-${index}`}
 								style={{ listStyle: 'outside none none' }}
+								onClick={() => handleClick(label)}
 							/>
 							<label
 								htmlFor={`x-${index}`}
