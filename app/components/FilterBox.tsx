@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 
 interface FilterBoxProps {
-	label: string;
+	label?: string;
 	selected?: boolean;
 }
 
@@ -27,10 +27,10 @@ const FilterBox: React.FC<FilterBoxProps> = ({ label, selected }) => {
 
 		let currentTags = currentQuery.tags ? currentQuery.tags.split(',') : [];
 
-		if (currentTags.includes(label)) {
+		if (currentTags.includes(label || '')) {
 			currentTags = currentTags.filter((cat) => cat !== label);
 		} else {
-			currentTags.push(label);
+			currentTags.push(label || '');
 		}
 
 		const updatedQuery: any = {

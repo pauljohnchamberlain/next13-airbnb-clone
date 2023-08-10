@@ -41,6 +41,8 @@ export default async function getExperiences(params: IExperiencesParams) {
 			};
 		}
 
+		console.log('query.duration :>> ', query.duration);
+
 		// if (durationInt != null) {
 		// 	// Check if duration is not null or undefined
 

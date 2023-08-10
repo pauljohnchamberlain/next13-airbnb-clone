@@ -6,7 +6,7 @@ import qs from 'query-string';
 // import { useRouter } from 'next/router';
 
 interface FilterBoxProps {
-	label: string;
+	label?: string;
 	selected?: boolean;
 }
 

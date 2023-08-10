@@ -156,7 +156,7 @@ const ExperienceModal = () => {
 						<div key={item.label} className='col-span-1'>
 							<CategoryInput
 								onClick={(tag) => {
-									const newTags = tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag];
+									const newTags = tags.includes(tag) ? tags.filter((t: string) => t !== tag) : [...tags, tag];
 									setCustomValue('tags', newTags);
 								}}
 								selected={tags.includes(item.label)}
