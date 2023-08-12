@@ -14,8 +14,6 @@ export default async function getListingById(params: IParams) {
 
 		const listingIdNumber = parseInt(accommodationId.toString(), 10);
 
-		console.log('listingIdNumber', listingIdNumber);
-
 		// Check if the parsed value is a valid number
 		if (isNaN(listingIdNumber)) {
 			throw new Error('Invalid Accommodation ID');

@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import qs from 'query-string';
+import { set } from 'date-fns';
 // import { useRouter } from 'next/router';
 
 interface FilterBoxProps {
@@ -21,6 +22,7 @@ const DurationFilter: React.FC<FilterBoxProps> = ({ label, selected }) => {
 	const duration = params.get('duration') || '';
 	const currentDuration = duration.split(',');
 
+	const [isLoading, setIsLoading] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleOpen = useCallback(() => {
@@ -28,38 +30,45 @@ const DurationFilter: React.FC<FilterBoxProps> = ({ label, selected }) => {
 	}, []);
 
 	const handleClick = useCallback(
-		(label: string) => {
-			let updatedDuration = currentDuration.includes(label)
-				? currentDuration.filter((dur) => dur !== label)
-				: [...currentDuration, label];
+		async (label: string) => {
+			setIsLoading(true);
+			try {
+				let updatedDuration = duration === label ? '' : label; // Clear the duration if it matches the clicked label
 
-			// Convert URLSearchParams to plain object
-			const currentQuery: Record<string, string> = {};
-			params.forEach((value, key) => {
-				currentQuery[key] = value;
-			});
+				// Convert URLSearchParams to plain object
+				const currentQuery: Record<string, string> = {};
+				params.forEach((value, key) => {
+					currentQuery[key] = value;
+				});
 
-			// Construct the updated query object without using 'delete'
-			const updatedQuery = Object.fromEntries(
-				Object.entries({
-					...currentQuery,
-					duration: updatedDuration.join(','),
-				}).filter(([key, value]) => key !== 'duration' || value.length > 0)
-			);
+				// Construct the updated query object without using 'delete'
+				const updatedQuery = Object.fromEntries(
+					Object.entries({
+						...currentQuery,
+						duration: updatedDuration,
+					}).filter(([key, value]) => key !== 'duration' || value.length > 0)
+				);
 
-			const url = qs.stringifyUrl(
-				{
-					url: '/experiences',
-					query: updatedQuery,
-				},
-				{ skipNull: true }
-			);
+				const url = qs.stringifyUrl(
+					{
+						url: '/experiences',
+						query: updatedQuery,
+					},
+					{ skipNull: true }
+				);
 
-			console.log('Constructed URL:', url);
+				console.log('Constructed URL:', url);
 
-			router.push(url);
+				await router.push(url); // Using await here to wait for navigation to complete
+			} catch (error) {
+				// Handle error here, e.g., log it
+				console.error('An error occurred:', error);
+			} finally {
+				// This will always run, regardless of whether an error was thrown
+				setIsLoading(false);
+			}
 		},
-		[duration, router]
+		[router, params]
 	);
 
 	return (
@@ -75,8 +84,8 @@ const DurationFilter: React.FC<FilterBoxProps> = ({ label, selected }) => {
 							>
 								<button
 									className={`relative inline-block w-full px-4 py-2 m-0 font-sans text-xs leading-4 text-center duration-150 bg-white border border-solid cursor-pointer hover:border-zinc-600 ${
-										selected ? 'border-zinc-800' : 'border-zinc-300'
-									} ${selected ? 'text-neutral-800' : 'text-neutral-500'} transition`}
+										duration ? 'border-zinc-800' : 'border-zinc-300'
+									} ${duration ? 'text-neutral-800' : 'text-neutral-500'} transition`}
 									aria-expanded='false'
 									type='button'
 									style={{
@@ -151,7 +160,9 @@ const DurationFilter: React.FC<FilterBoxProps> = ({ label, selected }) => {
 								name='search-filter-durationRanges'
 								data-test-id={`search-filters-item-input-trigger-durationRanges-${index}`}
 								style={{ listStyle: 'outside none none' }}
-								onClick={() => handleClick(label)}
+								disabled={isLoading}
+								checked={duration === label}
+								onChange={() => handleClick(label)}
 							/>
 							<label
 								htmlFor={`x-${index}`}

@@ -40,7 +40,6 @@ const ExperienceModal = () => {
 	const handleSuburbChange = (value?: SuburbSelectValue) => {
 		const suburbName = value && Array.isArray(value.suburb) ? value.suburb[0] : null;
 		setSelectedSuburb(suburbName);
-		console.log(`Suburb name: ${suburbName}`);
 		setCustomValue('location', value);
 	};
 

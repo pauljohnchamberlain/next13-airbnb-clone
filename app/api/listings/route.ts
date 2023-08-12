@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 	}
 
 	const body = await request.json();
-	console.log(body);
+	console.table(body);
 	const { title, description, imageCover, category, roomCount, bathroomCount, guestCount, location, price } = body;
 
 	Object.keys(body).forEach((value: any) => {

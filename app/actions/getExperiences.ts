@@ -3,6 +3,7 @@ import prisma from '@/app/libs/prismadb';
 export interface IExperiencesParams {
 	userId?: number;
 	location?: string;
+	suburb?: string;
 	duration?: string;
 	startDate?: string;
 	endDate?: string;
@@ -12,13 +13,9 @@ export interface IExperiencesParams {
 
 export default async function getExperiences(params: IExperiencesParams) {
 	try {
-		const { userId, location, duration, startDate, endDate, category, tags: tagsString } = params;
-
-		console.log('duration :>> ', duration);
+		const { userId, location, duration, startDate, endDate, category, tags: tagsString, suburb } = params;
 
 		console.log('params', params);
-
-		console.log('params.tags', params.tags);
 
 		// Splitting the tags string into an array
 		const tags = tagsString ? tagsString.split(',') : [];
@@ -32,24 +29,49 @@ export default async function getExperiences(params: IExperiencesParams) {
 		if (location) {
 			query.location = location;
 		}
-		console.log('query.duration :>> ', query.duration);
 
-		if (duration === '0-3 hours') {
-			let durationInt = 3;
-			query.duration = {
-				lte: durationInt,
+		if (suburb) {
+			query.location = {
+				startsWith: suburb + ' - ', // This will match only the exact city name followed by " - "
 			};
 		}
 
-		console.log('query.duration :>> ', query.duration);
-
-		// if (durationInt != null) {
-		// 	// Check if duration is not null or undefined
-
-		// 	query.duration = {
-		// 		lte: durationInt,
-		// 	};
-		// }
+		if (duration === '0-3 hours') {
+			let durationIntMax = 3;
+			let durationIntMin = 1;
+			query.duration = {
+				lte: durationIntMax,
+				gte: durationIntMin,
+			};
+		} else if (duration === '3-5 hours') {
+			let durationIntMax = 5;
+			let durationIntMin = 3;
+			query.duration = {
+				lte: durationIntMax,
+				gte: durationIntMin,
+			};
+		} else if (duration === '5-7 hours') {
+			let durationIntMax = 5;
+			let durationIntMin = 7;
+			query.duration = {
+				lte: durationIntMax,
+				gte: durationIntMin,
+			};
+		} else if (duration === '7+ hours') {
+			let durationIntMax = 24;
+			let durationIntMin = 7;
+			query.duration = {
+				lte: durationIntMax,
+				gte: durationIntMin,
+			};
+		} else if (duration === 'Multi-day') {
+			let durationIntMax = 72;
+			let durationIntMin = 24;
+			query.duration = {
+				lte: durationIntMax,
+				gte: durationIntMin,
+			};
+		}
 
 		if (category) {
 			query.category = category;

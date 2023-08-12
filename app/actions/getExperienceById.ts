@@ -14,8 +14,6 @@ export default async function getExperienceById(params: IParams) {
 
 		const experienceIdNumber = parseInt(experienceId.toString(), 10);
 
-		console.log('experienceIdNumber', experienceIdNumber);
-
 		// Check if the parsed value is a valid number
 		if (isNaN(experienceIdNumber)) {
 			throw new Error('Invalid Experience ID');

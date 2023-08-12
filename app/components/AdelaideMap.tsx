@@ -41,12 +41,9 @@ const AdelaideMap: React.FC<MapProps> = ({ suburb }) => {
 		if (suburb) {
 			const fullAddress = `${suburb}, South Australia, Australia`;
 
-			console.log('fullAddress', fullAddress);
-
 			Geocode.fromAddress(fullAddress).then(
 				(response) => {
 					const { lat, lng } = response.results[0].geometry.location;
-					console.log('lat,lng', lat, lng);
 					setCenter([lat, lng] as [number, number]); // Cast as tuple
 				},
 				(error) => {
@@ -57,8 +54,6 @@ const AdelaideMap: React.FC<MapProps> = ({ suburb }) => {
 			setCenter(null);
 		}
 	}, [suburb]);
-
-	console.log('center', center);
 
 	return (
 		<MapContainer

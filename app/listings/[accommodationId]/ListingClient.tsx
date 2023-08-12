@@ -31,10 +31,6 @@ interface ListingClientProps {
 }
 
 const ListingClient: React.FC<ListingClientProps> = ({ listing, reservations = [], currentUser }) => {
-	// console.log('Listing:', listing);
-	// console.log('Reservations:', reservations);
-	// console.log('Current User:', currentUser);
-	// console.log('location on ListingClient', listing.location);
 
 	const loginModal = useLoginModal();
 	const router = useRouter();

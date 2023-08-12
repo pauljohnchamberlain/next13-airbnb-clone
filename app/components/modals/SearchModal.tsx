@@ -12,13 +12,15 @@ import useSearchModal from '@/app/hooks/useSearchModal';
 import Modal from './Modal';
 import Calendar from '../inputs/Calendar';
 import Counter from '../inputs/Counter';
-import CountrySelect, { CountrySelectValue } from '../inputs/CountrySelect';
+// import CountrySelect, { CountrySelectValue } from '../inputs/CountrySelect';
+import AdelaideMap from '../AdelaideMap';
+import SuburbSelect, { SuburbSelectValue } from '../inputs/SuburbSelect';
 import Heading from '../Heading';
 
 enum STEPS {
 	LOCATION = 0,
-	DATE = 1,
-	INFO = 2,
+	// DATE = 1,
+	INFO = 1,
 }
 
 const SearchModal = () => {
@@ -28,10 +30,11 @@ const SearchModal = () => {
 
 	const [step, setStep] = useState(STEPS.LOCATION);
 
-	const [location, setLocation] = useState<CountrySelectValue>();
+	const [selectedSuburb, setSelectedSuburb] = useState<string | null>(null);
+	// const [location, setLocation] = useState<CountrySelectValue>();
 	const [guestCount, setGuestCount] = useState(1);
-	const [roomCount, setRoomCount] = useState(1);
-	const [bathroomCount, setBathroomCount] = useState(1);
+	const [duration, setDuration] = useState(1);
+	// const [bathroomCount, setBathroomCount] = useState(1);
 	const [dateRange, setDateRange] = useState<Range>({
 		startDate: new Date(),
 		endDate: new Date(),
@@ -45,6 +48,23 @@ const SearchModal = () => {
 			}),
 		[location]
 	);
+
+	const handleSuburbChange = (value?: SuburbSelectValue) => {
+		const suburbName = value ? value.suburb[0] : null;
+		setSelectedSuburb(suburbName);
+		console.log('selectedSuburb :>> ', selectedSuburb);
+		console.log('value :>> ', value);
+		// setCustomValue('location', value);
+		// setSelectedSuburb(value || null);
+	};
+
+	// const setCustomValue = (id: string, value: any) => {
+	// 	setValue(id, value, {
+	// 		shouldDirty: true,
+	// 		shouldTouch: true,
+	// 		shouldValidate: true,
+	// 	});
+	// };
 
 	const onBack = useCallback(() => {
 		setStep((value) => value - 1);
@@ -67,10 +87,9 @@ const SearchModal = () => {
 
 		const updatedQuery: any = {
 			...currentQuery,
-			location: location?.value,
+			suburb: selectedSuburb,
 			guestCount,
-			roomCount,
-			bathroomCount,
+			duration,
 		};
 
 		if (dateRange.startDate) {
@@ -83,7 +102,7 @@ const SearchModal = () => {
 
 		const url = qs.stringifyUrl(
 			{
-				url: '/',
+				url: '/experiences',
 				query: updatedQuery,
 			},
 			{ skipNull: true }
@@ -92,7 +111,7 @@ const SearchModal = () => {
 		setStep(STEPS.LOCATION);
 		searchModal.onClose();
 		router.push(url);
-	}, [step, searchModal, location, router, guestCount, roomCount, dateRange, onNext, bathroomCount, params]);
+	}, [step, searchModal, location, router, guestCount, duration, dateRange, onNext, params]);
 
 	const actionLabel = useMemo(() => {
 		if (step === STEPS.INFO) {
@@ -110,12 +129,16 @@ const SearchModal = () => {
 		return 'Back';
 	}, [step]);
 
+	console.log('selectedSuburb :>> ', selectedSuburb);
+
 	let bodyContent = (
 		<div className='flex flex-col gap-8'>
 			<Heading title='Where do you wanna go?' subtitle='Find the perfect location!' />
-			<CountrySelect value={location} onChange={(value) => setLocation(value as CountrySelectValue)} />
+			<SuburbSelect value={selectedSuburb} onChange={handleSuburbChange} />
+			<AdelaideMap suburb={selectedSuburb} />
+			{/* <CountrySelect value={location} onChange={(value) => setLocation(value as CountrySelectValue)} /> */}
 			<hr />
-			<Map center={location?.latlng} />
+			{/* <Map center={location?.latlng} /> */}
 		</div>
 	);
 
@@ -140,20 +163,20 @@ const SearchModal = () => {
 				/>
 				<hr />
 				<Counter
-					onChange={(value) => setRoomCount(value)}
-					value={roomCount}
-					title='Rooms'
-					subtitle='How many rooms do you need?'
+					onChange={(value) => setDuration(value)}
+					value={duration}
+					title='Duration'
+					subtitle='What is the duration of your experience in hours?'
 				/>
 				<hr />
-				<Counter
+				{/* <Counter
 					onChange={(value) => {
 						setBathroomCount(value);
 					}}
 					value={bathroomCount}
 					title='Bathrooms'
 					subtitle='How many bathrooms do you need?'
-				/>
+				/> */}
 			</div>
 		);
 	}

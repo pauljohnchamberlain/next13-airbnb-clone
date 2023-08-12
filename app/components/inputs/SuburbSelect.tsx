@@ -13,7 +13,7 @@ export type SuburbSelectValue = {
 };
 
 interface SuburbSelectProps {
-	value?: SuburbSelectValue;
+	value?: string | null;
 	onChange: (value?: SuburbSelectValue) => void;
 }
 
@@ -29,7 +29,9 @@ const SuburbSelect: React.FC<SuburbSelectProps> = ({ value, onChange }) => {
 		setSuburbs(suburbsData);
 	}, []);
 
-	const selectedValue = value ? suburbs.find((suburb) => suburb.value.id === value.id) || null : null;
+	const selectedValue = value ? suburbs.find((suburb) => suburb.value.suburb[0] === value) : null;
+
+	console.log('value :>> ', value);
 
 	return (
 		<div>
@@ -39,8 +41,7 @@ const SuburbSelect: React.FC<SuburbSelectProps> = ({ value, onChange }) => {
 				options={suburbs}
 				value={selectedValue}
 				onChange={(select) => {
-					console.log('Selected value:', select);
-					onChange(select?.value);
+					onChange(select ? select.value : undefined);
 				}}
 				formatOptionLabel={(option: any) => (
 					<div className='flex flex-row items-center gap-3 '>

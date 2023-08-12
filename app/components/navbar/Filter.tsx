@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import React from 'react';
 import Container from '../Container';
 
@@ -12,12 +13,14 @@ import DurationFilter from './DurationFilter';
 import AdvancedFilter from './AdvancedFilter';
 import tagCategories from '@/app/components/navbar/TagCategories';
 
+interface FilterProps {
+	checkboxSelected: boolean;
+}
+
 function Filter() {
 	const params = useSearchParams();
 	const selectedTags = params?.get('tags')?.split(',') || [];
-
-	console.log('params.get(tags)', params.get('tags'));
-	console.log('selectedTags', selectedTags);
+	const [checkboxSelected, setCheckboxSelected] = useState(false);
 
 	const pathname = usePathname();
 	// const isMainPage = pathname === '/';
@@ -52,7 +55,12 @@ function Filter() {
 							<div className='flex'>
 								<div className='flex h-12 overflow-hidden' style={{ flexFlow: 'wrap' }}>
 									{tagCategories.map((item) => (
-										<FilterBox key={item.label} label={item.label} selected={selectedTags.includes(item.label)} />
+										<FilterBox
+											key={item.label}
+											label={item.label}
+											selected={selectedTags.includes(item.label)}
+											checkboxSelected={checkboxSelected}
+										/>
 									))}
 								</div>
 							</div>

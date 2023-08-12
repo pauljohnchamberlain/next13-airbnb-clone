@@ -148,8 +148,18 @@ model Experience {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   location           String
+  street             String?
+  suburb             String?
+  state              String?
+  postcode           String?
+  country            String?              @default("Australia")
   lat                Float?
   lng                Float?
+  phone              String?
+  email              String?
+  website            String?
+  video              String?
+  openingHours       Json?
   experienceProvider ExperienceProvider[]
   startDate          DateTime?
   endDate            DateTime?

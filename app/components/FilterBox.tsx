@@ -7,6 +7,7 @@ import { useCallback } from 'react';
 interface FilterBoxProps {
 	label?: string;
 	selected?: boolean;
+	checkboxSelected?: boolean;
 }
 
 interface QueryParams {

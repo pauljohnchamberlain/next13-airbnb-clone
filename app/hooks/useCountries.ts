@@ -8,11 +8,8 @@ const formattedCountries = countries.map((country) => ({
   region: country.region,
 }));
 
-console.log('formattedCountries', formattedCountries);
-
 const useCountries = () => {
 	const getAll = () => formattedCountries;
-	console.log('getAll on UseCountries', getAll);
 
 	const getByValue = (value: string) => {
 		if (!value) {
@@ -20,7 +17,6 @@ const useCountries = () => {
 			return null;
 		}
 		const item = formattedCountries.find((item) => item.value === value);
-		console.log('item on UseCountries', item);
 		return item;
 	};
 
