@@ -102,7 +102,7 @@ const ExperienceClient: React.FC<{
 						title={experience.title}
 						imageCover={experience.imageCover}
 						location={experience.location}
-						summary={experience.summary}
+						summary={experience.summary ? experience.summary : undefined}
 					/>
 					<div className='grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6'>
 						<ExperienceInfo
