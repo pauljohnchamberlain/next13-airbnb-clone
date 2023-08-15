@@ -9,13 +9,28 @@ export interface IExperiencesParams {
 	endDate?: string;
 	category?: string;
 	tags?: string;
+	page?: string;
+	per_page?: string;
 }
 
-export default async function getExperiences(params: IExperiencesParams, isWineryRoute = false) {
+export interface GetExperiencesResponse {
+	experiences: any[]; // Adjust this to the type of your experiences if you have one
+	totalCount: number;
+}
+
+export default async function getExperiences(
+	params: IExperiencesParams,
+	isWineryRoute = false
+): Promise<GetExperiencesResponse> {
+	// console.log('Received params:', params);
+
 	try {
 		const { userId, location, duration, startDate, endDate, category, tags: tagsString, suburb } = params;
 
-		console.log('params', params);
+		const page = params.page ? parseInt(params.page) : 1;
+		const per_page = params.per_page ? parseInt(params.per_page) : 20;
+
+		// console.log('params', params);
 
 		// Splitting the tags string into an array
 		const tags = tagsString ? tagsString.split(',') : [];
@@ -95,19 +110,37 @@ export default async function getExperiences(params: IExperiencesParams, isWiner
 			query.endDate = { lte: endDate };
 		}
 
+		const totalCount = await prisma.experience.count({
+			where: query,
+		});
+
 		const experiences = await prisma.experience.findMany({
 			where: query,
 			orderBy: {
-				createdAt: 'desc',
+				title: 'asc',
 			},
+			take: per_page,
+			skip: (page - 1) * per_page,
 		});
+
+		// console.log('Constructed query:', query);
 
 		const safeExperiences = experiences.map((experience) => ({
 			...experience,
 			createdAt: experience.createdAt.toISOString(),
 		}));
 
-		return safeExperiences;
+		console.log('safeExperiences :>> ', safeExperiences.length);
+		console.log('Total records in DB for the query:', totalCount);
+		console.log('Page:', page);
+		console.log('Per Page:', per_page);
+		console.log('Take (Limit):', per_page);
+		console.log('Skip (Offset):', (page - 1) * per_page);
+
+		return {
+			experiences: safeExperiences || [],
+			totalCount: totalCount,
+		};
 	} catch (error: any) {
 		throw new Error(error);
 	}
