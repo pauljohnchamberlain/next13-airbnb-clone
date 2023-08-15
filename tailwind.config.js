@@ -8,7 +8,7 @@ module.exports = {
 		colors: {
 			...colors, // spread the existing colors
 			primary: colors.rose['500'],
-			secondary: colors.red['800'],
+			secondary: colors.red['700'],
 			// ...
 		},
 	},

@@ -25,7 +25,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({ hasNextPage, hasPrevP
 		<div className='flex justify-center flex-row pt-6'>
 			<div className='flex gap-6 items-center p-4'>
 				<button
-					className='bg-primary text-white p-1 px-4'
+					className='bg-primary text-white p-1 px-4 rounded hover:bg-secondary'
 					disabled={!hasPrevPage}
 					onClick={() => {
 						router.push(`${pathname}/?page=${Number(page) - 1}&per_page=${per_page}`);
@@ -37,7 +37,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({ hasNextPage, hasPrevP
 					{page} / {Math.ceil(totalCount / Number(per_page))}
 				</div>
 				<button
-					className='bg-primary text-white p-1 px-4'
+					className='bg-primary text-white p-1 px-4 rounded hover:bg-secondary'
 					disabled={!hasNextPage}
 					onClick={() => {
 						router.push(`${pathname}/?page=${Number(page) + 1}&per_page=${per_page}`);

@@ -17,7 +17,9 @@ const WineryExperiences = async ({ searchParams }: ExperiencesProps) => {
 	const currentUser = await getCurrentUser();
 	const wineryExperiences = await getExperiences(searchParams, true);
 
-	if (wineryExperiences.length === 0) {
+
+
+	if (wineryExperiences.experiences.length === 0) {
 		return (
 			<ClientOnly>
 				<EmptyState showReset />
@@ -41,7 +43,7 @@ const WineryExperiences = async ({ searchParams }: ExperiencesProps) => {
             gap-8
           '
 				>
-					{wineryExperiences.map((experience: any) => (
+					{wineryExperiences.experiences.map((experience: any) => (
 						<ExperienceCard currentUser={currentUser} key={experience.id} data={experience} />
 					))}
 				</div>
