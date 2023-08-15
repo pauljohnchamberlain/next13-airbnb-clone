@@ -132,7 +132,7 @@ model Experience {
   slug               String               @unique
   tags               String[]
   description        String
-  summary            String
+  summary            String?
   duration           Int?
   guestCount         Int?
   includes           String[]

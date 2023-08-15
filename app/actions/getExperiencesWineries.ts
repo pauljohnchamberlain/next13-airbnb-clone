@@ -11,7 +11,7 @@ export interface IExperiencesParams {
 	tags?: string;
 }
 
-export default async function getExperiences(params: IExperiencesParams, isWineryRoute = false) {
+export default async function getExperiencesWineries(params: IExperiencesParams, isWineryRoute = false) {
 	try {
 		const { userId, location, duration, startDate, endDate, category, tags: tagsString, suburb } = params;
 
@@ -20,14 +20,18 @@ export default async function getExperiences(params: IExperiencesParams, isWiner
 		// Splitting the tags string into an array
 		const tags = tagsString ? tagsString.split(',') : [];
 
-		let query: any = {};
+		// This call filters by wineries
+		const wineryExperiences = await getExperiencesWineries(params, true);
 
-		if (isWineryRoute) {
-			// If it's the winery route, ensure that "winery" tag is included
-			query.tags = { has: 'Winery' };
-		} else if (tags && tags.length > 0) {
-			query.tags = { hasSome: tags };
+		if (wineryExperiences.length === 0) {
+			return (
+				<ClientOnly>
+					<EmptyState showReset />
+				</ClientOnly>
+			);
 		}
+
+		let query: any = {};
 
 		if (userId) {
 			query.userId = userId;
