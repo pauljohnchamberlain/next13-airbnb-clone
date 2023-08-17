@@ -21,7 +21,7 @@ const WineryExperiences = async ({ searchParams }: ExperiencesProps) => {
 	const currentUser = await getCurrentUser();
 
 	// Fetch the winery experiences based on the provided search parameters.
-	const wineryExperiences = await getExperiences(searchParams, true);
+	const wineryExperiences = await getExperiences(searchParams);
 	// console.log('Wineries: searchParams :>> ', searchParams);
 
 	// Check if there are no experiences returned.
