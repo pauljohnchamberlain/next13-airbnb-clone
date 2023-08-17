@@ -1,4 +1,5 @@
 import prisma from '@/app/libs/prismadb';
+import { url } from 'inspector';
 
 export interface IExperiencesParams {
 	userId?: number;
@@ -11,6 +12,7 @@ export interface IExperiencesParams {
 	tags?: string;
 	page?: string;
 	per_page?: string;
+	experienceChildPage?: string;
 }
 
 export interface GetExperiencesResponse {
@@ -18,14 +20,21 @@ export interface GetExperiencesResponse {
 	totalCount: number;
 }
 
-export default async function getExperiences(
-	params: IExperiencesParams,
-	isWineryRoute = false
-): Promise<GetExperiencesResponse> {
+export default async function getExperiences(params: IExperiencesParams): Promise<GetExperiencesResponse> {
 	// console.log('Received params:', params);
 
 	try {
-		const { userId, location, duration, startDate, endDate, category, tags: tagsString, suburb } = params;
+		const {
+			userId,
+			location,
+			duration,
+			startDate,
+			endDate,
+			category,
+			tags: tagsString,
+			suburb,
+			experienceChildPage,
+		} = params;
 
 		const page = params.page ? parseInt(params.page) : 1;
 		const per_page = params.per_page ? parseInt(params.per_page) : 20;
@@ -37,12 +46,20 @@ export default async function getExperiences(
 
 		let query: any = {};
 
-		if (isWineryRoute) {
-			// If it's the winery route, ensure that "winery" tag is included
-			query.tags = { has: 'Winery' };
-		} else if (tags && tags.length > 0) {
-			query.tags = { hasSome: tags };
-		}
+		// if (isWineryRoute) {
+		// 	// If it's the winery route, ensure that "winery" tag is included
+		// 	query.tags = { has: 'Winery' };
+		// } else if (tags && tags.length > 0) {
+		// 	query.tags = { hasSome: tags };
+		// }
+
+		// if (experiencesChildPage) {
+		// 	if (experiencesChildPage === 'wineries') {
+		// 		const urlTag = 'wineries';
+		// 	}
+		// }
+
+		// console.log('getExperiences: isWineryRoute :>> ', searchParams.isWineryRoute);
 
 		if (userId) {
 			query.userId = userId;
@@ -99,10 +116,10 @@ export default async function getExperiences(
 			query.category = category;
 		}
 
-		if (tags && tags.length > 0) {
-			query.tags = {
-				hasSome: tags,
-			};
+		if (params.experienceChildPage === 'Wineries') {
+			query.tags = { has: 'Winery' }; // Add the 'Winery' tag conditionally
+		} else if (tags && tags.length > 0) {
+			query.tags = { hasSome: tags };
 		}
 
 		if (startDate && endDate) {

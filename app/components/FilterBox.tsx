@@ -43,6 +43,10 @@ const FilterBox: React.FC<FilterBoxProps> = ({ label, selected }) => {
 			delete updatedQuery.tags;
 		}
 
+		// Remove the pagination parameters to reset it
+		delete updatedQuery.page;
+		delete updatedQuery.per_page;
+
 		const url = qs.stringifyUrl(
 			{
 				url: '/experiences',

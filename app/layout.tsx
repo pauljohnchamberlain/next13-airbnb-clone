@@ -1,6 +1,7 @@
 import { Nunito } from 'next/font/google';
 
 import Navbar from '@/app/components/navbar/Navbar';
+import Footer from '@/app/components/Footer';
 import LoginModal from '@/app/components/modals/LoginModal';
 import RegisterModal from '@/app/components/modals/RegisterModal';
 import SearchModal from '@/app/components/modals/SearchModal';
@@ -38,6 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 					<Navbar currentUser={currentUser} />
 				</ClientOnly>
 				<div className='pb-20 pt-28'>{children}</div>
+				<Footer />
 			</body>
 		</html>
 	);
